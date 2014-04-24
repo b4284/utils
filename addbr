@@ -1,0 +1,52 @@
+pkill dhcpcd
+
+ip addr flush dev enp2s0
+ip route flush dev enp2s0
+
+tunctl -u derek -t qemu-net0
+tunctl -u derek -t qemu-net1
+tunctl -u derek -t qemu-net2
+tunctl -u derek -t qemu-net3
+tunctl -u derek -t qemu-net4
+tunctl -u derek -t qemu-net5
+tunctl -u derek -t qemu-net6
+tunctl -u derek -t qemu-net7
+tunctl -u derek -t qemu-net8
+tunctl -u derek -t qemu-net9
+
+brctl addbr br0
+brctl addif br0 enp2s0
+brctl addif br0 qemu-net0
+brctl addif br0 qemu-net1
+brctl addif br0 qemu-net2
+brctl addif br0 qemu-net3
+brctl addif br0 qemu-net4
+brctl addif br0 qemu-net5
+brctl addif br0 qemu-net6
+brctl addif br0 qemu-net7
+brctl addif br0 qemu-net8
+brctl addif br0 qemu-net9
+
+cd /proc/sys/net/bridge
+for f in bridge-nf-*; do echo 0 > $f; done
+
+ip link set up dev br0
+ip link set up dev qemu-net0
+ip link set up dev qemu-net1
+ip link set up dev qemu-net2
+ip link set up dev qemu-net3
+ip link set up dev qemu-net4
+ip link set up dev qemu-net5
+ip link set up dev qemu-net6
+ip link set up dev qemu-net7
+ip link set up dev qemu-net8
+ip link set up dev qemu-net9
+
+ip link set address 90:2b:34:12:33:b6 dev br0
+dhcpcd br0
+
+#ip route flush all
+#ip route add 10.1.2.0/24 dev br0
+#ip route add default via 10.1.2.254
+
+
