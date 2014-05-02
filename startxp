@@ -1,0 +1,1 @@
+qemu-system-i386 -enable-kvm -m 1024 -net tap,vlan=0,ifname=qemu-net1,script=no -net nic,vlan=0,model=rtl8139,macaddr=36:1C:94:14:98:03 -vga vmware -vnc 127.0.0.1:0 xp.img
